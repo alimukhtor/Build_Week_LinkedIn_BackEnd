@@ -3,6 +3,7 @@ import ProfileModel from '../../schema/profile/schema.js'
 
 const profileRouter = express.Router()
 
+// ************* POST USER PROFILE 
 
 profileRouter.post("/", async(req, res, next)=> {
     try {
@@ -13,6 +14,9 @@ profileRouter.post("/", async(req, res, next)=> {
         next(error)
     }
 })
+
+// ************* GET ALL PROFILES 
+
 profileRouter.get("/", async(req, res, next)=> {
     try {
         const profiles = await ProfileModel.find(req.body)
@@ -21,6 +25,9 @@ profileRouter.get("/", async(req, res, next)=> {
         next(error)
     }
 })
+
+// ************* GET BY ID 
+
 profileRouter.get("/:userId", async(req, res, next)=> {
     try {
         const userId = await ProfileModel.findById(req.params.userId)
@@ -29,6 +36,10 @@ profileRouter.get("/:userId", async(req, res, next)=> {
         next(error)
     }
 })
+
+
+// ************* UPDATE  
+
 profileRouter.put("/:userId", async(req, res, next)=> {
     try {
         const updateProfile = await ProfileModel.findByIdAndUpdate(req.params.userId, req.body, {new:true})
@@ -38,7 +49,23 @@ profileRouter.put("/:userId", async(req, res, next)=> {
         next(error)
     }
 })
+
+// ************* DELETE 
+profileRouter.delete("/:userId", async(req, res, next)=> {
+    try {
+        const deleteProfile = await ProfileModel.findByIdAndDelete(req.params.userId)
+        res.send()
+    } catch (error) {
+        next(error)
+    }
+})
+
+// ************* GET PROFILE AS CV 
+
 profileRouter.get("/:userId/CV", async(req, res, next)=> {})
+
+// ************* UPLOAD IMAGE 
+
 profileRouter.post("/:userId/uploadImage", async(req, res, next)=> {})
 
 
