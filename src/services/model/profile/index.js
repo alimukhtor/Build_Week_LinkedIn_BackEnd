@@ -1,6 +1,7 @@
 import express from 'express'
 import ProfileModel from '../../schema/profile/schema.js'
-
+import {getPDFReadableStream} from '../../library/pdf-tools.js'
+import { pipeline } from 'stream'
 const profileRouter = express.Router()
 
 // ************* POST USER PROFILE 
@@ -62,7 +63,22 @@ profileRouter.delete("/:userId", async(req, res, next)=> {
 
 // ************* GET PROFILE AS CV 
 
-profileRouter.get("/:userId/CV", async(req, res, next)=> {})
+profileRouter.get("/:userId/CV", async(req, res, next)=> {
+    try {
+        const author = await getAuthors()
+        const filterId = await ProfileModel.find(index => index._id === request.params.userId)
+        res.setHeader("Content-Disposition", "attachment; filename=userProfile.pdf") 
+        const source =  getPDFReadableStream(filterId)
+        // const transform = createGzip()
+        const destination = response
+        pipeline(source, destination, err => {
+            if(err) next(err);
+            console.log("Downloaded successfully!");
+        })
+    } catch (error) {
+        next(error)
+    }
+})
 
 // ************* UPLOAD IMAGE 
 
