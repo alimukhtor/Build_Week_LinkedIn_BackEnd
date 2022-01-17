@@ -22,10 +22,11 @@ server.use("/profiles", profileRouter);
 server.use("/post", postRouter);
 server.use("/experience", experienceRouter);
 
-// ******************* MONGO CONNECTION ********************
+// ******************* MONGO CONNECTION *********************
 const port = process.env.PORT || 3001;
 
 mongoose.connect(process.env.MONGO_DB);
+
 mongoose.connection.on("connected", () => {
   console.log("Connected to MongoDB!");
 

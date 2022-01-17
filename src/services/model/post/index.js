@@ -1,8 +1,23 @@
 import express from "express"
 import PostModel from "../../schema/post/schema.js"
+import ImageModel from "../../schema/post/imageSchema.js"
+import multer from "multer"
+import fs from "fs-extra"
 
 const postRouter = express.Router()
 
+// SET STORAGE
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads')
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+  })
+
+
+let upload = multer({ storage: storage })
 
 // Post new post
 
@@ -18,11 +33,24 @@ postRouter.post("/", async (req, res, next) => {
 
 // Post image to post
 
-postRouter.post("/:postId", async (req, res, next) => {
+postRouter.post("/:postId/image", upload.single('postImage'), async (req, res, next) => {
     try {
-        const postImage = new ImageModel(req.body)
-        const { _id } = await postImage.save()
-        res.send( _id )
+        let img = fs.readFileSync(req.file.path)
+        let encode_img = img.toString('base64')
+        let final_img = {
+            contentType:req.file.mimetype,
+            image: Buffer.from(encode_img,'base64')
+        }
+        ImageModel.create(final_img, function(err,result){
+            if(err){
+                console.log(err);
+            }else{
+                console.log(result.img.Buffer);
+                console.log("Saved To database");
+                res.contentType(final_img.contentType);
+                res.send(final_img.image);
+            }
+        })
     } catch (error) {
         next(error)
     }
