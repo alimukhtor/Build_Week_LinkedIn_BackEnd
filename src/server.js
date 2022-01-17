@@ -5,12 +5,23 @@ import mongoose from 'mongoose'
 
 
 const server = express()
-
 const port = process.env.PORT || 3001
+
+
+// ************************************* IMPORT ROUTERS *************************
+
+import profileRouter from './services/model/profile/index.js'
+
+// ************************************* MIDDLEWARES *****************************
 
 server.use(cors())
 server.use(express.json())
 
+//  ****************************************** ROUTES **************************
+
+server.use("/profiles", profileRouter)
+
+// ******************* MONGO CONNECTION ********************
 mongoose.connect(process.env.MONGO_DB)
 mongoose.connection.on("connected", () => {
     console.log("Connected to MongoDB!")
