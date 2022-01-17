@@ -31,9 +31,9 @@ postRouter.post("/", async (req, res, next) => {
     }
 })
 
-// Post image to post
+// Post Image to Post
 
-postRouter.post("/:postId/image", upload.single('postImage'), async (req, res, next) => {
+postRouter.post("/:postId/image", upload.single('image'), async (req, res, next) => {
     try {
         let img = fs.readFileSync(req.file.path)
         let encode_img = img.toString('base64')
