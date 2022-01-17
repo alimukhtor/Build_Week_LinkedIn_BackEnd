@@ -1,5 +1,6 @@
 import express from "express"
 import PostModel from "../../schema/post/schema.js"
+import ImageModel from "../../schema/post/imageSchema.js";
 
 const postRouter = express.Router()
 
@@ -10,7 +11,19 @@ postRouter.post("/", async (req, res, next) => {
     try {
         const newPost = new PostModel(req.body)
         const { _id } = await newPost.save()
-        res.send(newPost)
+        res.send( _id )
+    } catch (error) {
+        next(error)
+    }
+})
+
+// Post image to post
+
+postRouter.post("/:postId", async (req, res, next) => {
+    try {
+        const postImage = new ImageModel(req.body)
+        const { _id } = await postImage.save()
+        res.send( _id )
     } catch (error) {
         next(error)
     }
