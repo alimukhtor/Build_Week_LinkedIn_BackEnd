@@ -1,0 +1,26 @@
+{
+  "name": "build_week_linkedin_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon -r dotenv/config ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alimukhtor/Build_Week_LinkedIn_BackEnd.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alimukhtor/Build_Week_LinkedIn_BackEnd/issues"
+  },
+  "homepage": "https://github.com/alimukhtor/Build_Week_LinkedIn_BackEnd#readme",
+  "dependencies": {
+    "httperror": "^0.2.3",
+    "node-modules": "^1.0.1"
+  }
+}
