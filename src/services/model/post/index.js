@@ -1,6 +1,5 @@
 import express from "express"
 import PostModel from "../../schema/post/schema.js"
-import ImageModel from "../../schema/post/imageSchema.js";
 
 const postRouter = express.Router()
 

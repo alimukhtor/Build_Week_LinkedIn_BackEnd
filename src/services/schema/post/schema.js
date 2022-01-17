@@ -1,13 +1,11 @@
 import mongoose from "mongoose"
 import UserSchema from "../../schema/profile/schema.js"
-import ImageSchema from "../../schema/post/imageSchema.js";
 
 const { Schema, model } = mongoose
 
 const PostSchema = new Schema({
     text: { type: String, required: true },
-    image: [ImageSchema],
-    user: [UserSchema],
+    user: [{type:Schema.Types.ObjectId, ref:"Profile"}],
 },
 { timestamps: true },
 )
