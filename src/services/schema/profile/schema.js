@@ -20,7 +20,7 @@ const profileSchema = new Schema({
     bio:{type:String},
     title:{type:String},
     area:{type:String},
-    image:{type:String, default:"https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com%2Fphotos%2Fcolored-powder-explosion-on-black-background-picture-id1057506940%3Fk%3D20%26m%3D1057506940%26s%3D612x612%26w%3D0%26h%3D3j5EA6YFVg3q-laNqTGtLxfCKVR3_o6gcVZZseNaWGk%3D&imgrefurl=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fmixing-colors&tbnid=sSAWficq0VlQLM&vet=12ahUKEwjtyYvZv7j1AhW5BhAIHZmVCPoQMygWegUIARCEAg..i&docid=s-jiZk9FqPm3MM&w=612&h=555&itg=1&q=images&ved=2ahUKEwjtyYvZv7j1AhW5BhAIHZmVCPoQMygWegUIARCEAg"},
+    image:{type:String, default:"Image()"},
     
 },
 {
