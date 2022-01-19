@@ -74,7 +74,7 @@ postRouter.get("/", async (req, res, next) => {
 
 postRouter.get("/:postId", async (req, res, next) => {
     try {
-        const singlePost = await PostModel.findById(req.params.postId)
+        const singlePost = await PostModel.findById(req.params.postId).populate({ path: "user"})
         if(singlePost) {
             res.send(singlePost) 
         } else {
