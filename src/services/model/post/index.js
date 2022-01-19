@@ -63,7 +63,7 @@ postRouter.get("/:postId/image", async (req, res, next) => {
 
 postRouter.get("/", async (req, res, next) => {
     try {
-        const allPosts = await PostModel.find().populate('Profile')
+        const allPosts = await PostModel.find().populate({ path: "user"})
         res.send(allPosts)
     } catch (error) {
         next(error)
