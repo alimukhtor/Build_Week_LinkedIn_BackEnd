@@ -1,23 +1,30 @@
 import express from "express"
 import PostModel from "../../schema/post/schema.js"
-import ImageModel from "../../schema/post/imageSchema.js"
+import UserModel from "../../schema/profile/schema.js"
 import multer from "multer"
 import fs from "fs-extra"
+import { v2 as Cloudinary } from "cloudinary"
+import { CloudinaryStorage } from "multer-storage-cloudinary"
+
+Cloudinary.config({ 
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.CLOUD_KEY,
+    api_secret: process.env.CLOUD_SECRET
+  });
 
 const postRouter = express.Router()
 
-// SET STORAGE
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads')
+const storage = new CloudinaryStorage({
+    cloudinary: Cloudinary,
+    params: {
+      folder: 'linkedIn',
+      format: async (req, file) => 'png', // supports promises as well
+      public_id: (req, file) => 'new',
     },
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now())
-    }
-  })
+  });
+   
+const parser = multer({ storage: storage });
 
-
-let upload = multer({ storage: storage })
 
 // Post new post
 
@@ -33,24 +40,20 @@ postRouter.post("/", async (req, res, next) => {
 
 // Post Image to Post
 
-postRouter.post("/:postId/image", upload.single('image'), async (req, res, next) => {
+postRouter.post("/:postId/image", parser.single('image'), async (req, res, next) => {
     try {
-        let img = fs.readFileSync(req.file.path)
-        let encode_img = img.toString('base64')
-        let final_img = {
-            contentType:req.file.mimetype,
-            image: Buffer.from(encode_img,'base64')
-        }
-        ImageModel.create(final_img, function(err,result){
-            if(err){
-                console.log(err);
-            }else{
-                console.log(result.img.Buffer);
-                console.log("Saved To database");
-                res.contentType(final_img.contentType);
-                res.send(final_img.image);
-            }
-        })
+        res.json(req.file)
+    } catch (error) {
+        next(error)
+    }
+})
+
+// Get Post Image
+
+postRouter.get("/:postId/image", async (req, res, next) => {
+    try {
+        const image = await PostModel.findById(req.params.postId)
+        res.send(image)
     } catch (error) {
         next(error)
     }
@@ -60,7 +63,7 @@ postRouter.post("/:postId/image", upload.single('image'), async (req, res, next)
 
 postRouter.get("/", async (req, res, next) => {
     try {
-        const allPosts = await PostModel.find()
+        const allPosts = await PostModel.find().populate('Profile')
         res.send(allPosts)
     } catch (error) {
         next(error)
@@ -113,3 +116,12 @@ postRouter.delete("/:postId", async (req, res, next) => {
 })
 
 export default postRouter
+
+// UserModel.
+//   find().
+//   where('username').equals('Tennis').
+//   where('age').gt(17).lt(50).  //Additional where query
+//   limit(5).
+//   sort({ age: -1 }).
+//   select('username').
+//   exec(callback); // where callback is the name of our callback function.

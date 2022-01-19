@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-import UserSchema from "../../schema/profile/schema.js"
 
 const { Schema, model } = mongoose
 
