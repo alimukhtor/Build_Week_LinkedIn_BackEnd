@@ -20,7 +20,7 @@ profileRouter.post("/", async (req, res, next) => {
 
 profileRouter.get("/", async (req, res, next) => {
   try {
-    const profiles = await ProfileModel.find(req.body);
+    const profiles = await ProfileModel.find(req.body)
     res.send(profiles);
   } catch (error) {
     next(error);

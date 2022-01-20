@@ -2,6 +2,7 @@ import express from "express";
 
 // import createHttpError from "http-errors";
 import ExperienceModel from "../../schema/experience/schema.js";
+import ProfileModel from '../../schema/profile/schema.js'
 
 const experienceRouter = express.Router();
 
@@ -24,7 +25,7 @@ experienceRouter.get("/:username/experiences", async (req, res, next) => {
     console.log(req.params.username);
     const experience = await ExperienceModel.find({
       name: req.params.username,
-    });
+    }).populate("user");
     res.send(experience);
   } catch (error) {
     next(error);

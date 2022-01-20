@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-
 const {Schema, model} = mongoose
 
 const profileSchema = new Schema({
@@ -10,7 +9,7 @@ const profileSchema = new Schema({
     title:{type:String},
     area:{type:String},
     image:{type:String, default:"Image()"},
-    username:{type:String, unique:true, required:true}
+    username:{type:String, unique:true, required:true},
     
 },
 {
