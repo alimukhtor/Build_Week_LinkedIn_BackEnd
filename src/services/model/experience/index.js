@@ -100,4 +100,18 @@ experienceRouter.delete(
   }
 );
 
+experienceRouter.get("/:username/experiences/CSV", async(req, res, next)=> {
+  try {
+    res.setHeader("Content-Disposition", "attachment; filename=expr.csv") 
+    const source = getBlogsReadableStream()
+    const transform = new json2csv.Transform({fields: ["title", "text", "createdAt", "cover", "avatar"]})
+    const destination = response
+    pipeline(source, transform, destination, err=> {
+        if(err) next(err)
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
 export default experienceRouter;
