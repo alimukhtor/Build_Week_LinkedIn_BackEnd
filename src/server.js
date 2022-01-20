@@ -4,7 +4,7 @@ import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 import experienceRouter from "./services/model/experience/index.js";
 
-const whiteList = [process.env.FE_LOCAL_URL, process.env.FE_REMOTE_URL]
+const whiteList = [process.env.FE_LOCAL_URL, process.env.FE_REMOTE_URL];
 
 const corsOptions = {
     origin: function (origin, next) {
