@@ -14,7 +14,7 @@ const {Schema, model} = mongoose
 // "image": ... //server generated on upload, set a default here
 
 
-const profileSchema = new Schema({
+export const profileSchema = new Schema({
     name:{type:String},
     surname:{type:String},
     email:{type:String},

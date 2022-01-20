@@ -2,7 +2,6 @@ import express from "express"
 import PostModel from "../../schema/post/schema.js"
 import UserModel from "../../schema/profile/schema.js"
 import multer from "multer"
-import fs from "fs-extra"
 import { v2 as Cloudinary } from "cloudinary"
 import { CloudinaryStorage } from "multer-storage-cloudinary"
 
@@ -63,9 +62,12 @@ postRouter.get("/:postId/image", async (req, res, next) => {
 
 postRouter.get("/", async (req, res, next) => {
     try {
-        const allPosts = await PostModel.find().populate("user")
-        allPosts.forEach(post => {
-            UserModel.find({ username: post.username })
+        const allPosts = await PostModel.find()
+        allPosts.forEach(async post => {
+            let user = await UserModel.findOne({ username: "PMur" })
+            post.user = user
+            console.log(post)
+            console.log(user)
         })
         res.send(allPosts)
     } catch (error) {
