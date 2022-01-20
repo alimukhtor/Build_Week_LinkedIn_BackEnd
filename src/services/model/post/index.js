@@ -10,7 +10,7 @@ Cloudinary.config({
     cloud_name: process.env.CLOUD_NAME, 
     api_key: process.env.CLOUD_KEY,
     api_secret: process.env.CLOUD_SECRET
-  });
+  })
 
 const postRouter = express.Router()
 
@@ -21,9 +21,9 @@ const storage = new CloudinaryStorage({
       format: async (req, file) => 'png', // supports promises as well
       public_id: (req, file) => 'new',
     },
-  });
+  })
    
-const parser = multer({ storage: storage });
+const parser = multer({ storage: storage })
 
 
 // Post new post
