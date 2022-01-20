@@ -6,9 +6,11 @@ const experienceSchema = new Schema(
   {
     role: { type: String},
     company: { type: String},
+    startDate:{type:Date},
+    endDate:{type:Date},
     description: { type: String},
-    username: { type: String, required: true},
     area: { type: String},
+    username: { type: String, required: true},
     image:{type:String, default:"Image()"},
     user: [{ type:Schema.Types.ObjectId, ref:"Profile" }],
   },
