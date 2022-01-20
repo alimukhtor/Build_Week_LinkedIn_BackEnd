@@ -61,16 +61,16 @@ profileRouter.delete("/:userId", async(req, res, next)=> {
     }
 })
 
-// ************* GET PROFILE AS CV 
+// ************* GET PROFILE AS PDF 
 
 profileRouter.get("/:userId/CV", async(req, res, next)=> {
     try {
-        const author = await getAuthors()
-        const filterId = await ProfileModel.find(index => index._id === request.params.userId)
+        const filterId = await ProfileModel.findById(req.params.userId)
+        
         res.setHeader("Content-Disposition", "attachment; filename=userProfile.pdf") 
+        console.log("Filter:", filterId);
         const source =  getPDFReadableStream(filterId)
-        // const transform = createGzip()
-        const destination = response
+        const destination = res
         pipeline(source, destination, err => {
             if(err) next(err);
             console.log("Downloaded successfully!");
@@ -83,6 +83,45 @@ profileRouter.get("/:userId/CV", async(req, res, next)=> {
 // ************* UPLOAD IMAGE 
 
 profileRouter.post("/:userId/uploadImage", async(req, res, next)=> {})
+
+
+
+// **************** GET /:userName/experiences
+
+profileRouter.post("/:username/experiences", async(req, res, next)=>{
+    try {
+        //GET /username/exp = no body
+        const user = await ProfileModel.find({username: req.params.username})
+        const experiences = await Exp.find({username: user.username}) 
+
+        res.send({...user, ...experiences})
+        //POST 
+
+        //send username in the body
+        const newExp = new Exp(req.body).save()
+
+
+        console.log("Username is :", user.username);
+        if(user){
+            const postExpr = { ...user.toObject(), role: req.body.role, company:req.body.company} 
+            // console.log("Poste comment:", postComment);
+            const modifyBlog = await ProfileModel.findByIdAndUpdate(req.params.userId, {$push:{experiences:postExpr}}, {new:true})
+            // const {_id} = await user.save()
+            console.log("Body", modifyBlog);
+        
+            res.send(modifyBlog)
+        }
+    } catch (error) {
+        next(error)
+    }
+})
+
+// **************** POST /:userName/experiences
+// **************** GET /:userName/experiences/:expId
+// **************** UPDATE /:userName/experiences/:expId
+// **************** DELETE /:userName/experiences/:expId
+// **************** POST /:userName/experiences/:expId/picture
+// **************** GET /:userName/experiences/:expId/CSV
 
 
 export default profileRouter

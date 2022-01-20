@@ -63,10 +63,11 @@ postRouter.get("/:postId/image", async (req, res, next) => {
 
 postRouter.get("/", async (req, res, next) => {
     try {
-        const allPosts = await PostModel.find()
+        const allPosts = await PostModel.find().populate("user")
         allPosts.forEach(post => {
             UserModel.find({ username: post.username })
         })
+        res.send(allPosts)
     } catch (error) {
         next(error)
     }

@@ -4,7 +4,7 @@ import ExperienceModel from "../../schema/experience/schema.js";
 
 const experienceRouter = express.Router();
 
-experienceRouter.post("/", async (req, res, next) => {
+experienceRouter.post("/:userNanme", async (req, res, next) => {
   try {
     const newExperience = new ExperienceModel(req.body);
     const { _id } = await newExperience.save();
