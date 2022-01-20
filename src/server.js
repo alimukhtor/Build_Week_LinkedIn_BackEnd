@@ -21,7 +21,7 @@ server.use(express.json());
 
 server.use("/profiles", profileRouter);
 server.use("/post", postRouter);
-server.use("/experience", experienceRouter);
+server.use("/profile", experienceRouter);
 
 
 // ******************* MONGO CONNECTION *********************
