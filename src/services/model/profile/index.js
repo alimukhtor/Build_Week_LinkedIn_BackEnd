@@ -2,8 +2,31 @@ import express from 'express'
 import ProfileModel from '../../schema/profile/schema.js'
 import {getPDFReadableStream} from '../../library/pdf-tools.js'
 import { pipeline } from 'stream'
+import multer from "multer"
+import fs from "fs-extra"
+import { v2 as Cloudinary } from "cloudinary"
+import { CloudinaryStorage } from "multer-storage-cloudinary"
 const profileRouter = express.Router()
 
+// ***************** CLOUDINARYIMAGE UPLOAD***************
+Cloudinary.config({ 
+    cloud_name: process.env.CLOUD_NAME, 
+    api_key: process.env.CLOUD_KEY,
+    api_secret: process.env.CLOUD_SECRET
+  });
+
+
+  const storage = new CloudinaryStorage({
+    cloudinary: Cloudinary,
+    params: {
+      folder: 'linkedIn',
+      format: async (req, file) => 'png', // supports promises as well
+      public_id: (req, file) => 'new',
+    },
+  });
+
+  const parser = multer({ storage: storage });
+   
 // ************* POST USER PROFILE 
 
 profileRouter.post("/", async(req, res, next)=> {
@@ -82,7 +105,13 @@ profileRouter.get("/:userId/CV", async(req, res, next)=> {
 
 // ************* UPLOAD IMAGE 
 
-profileRouter.post("/:userId/uploadImage", async(req, res, next)=> {})
+profileRouter.post("/:userId/picture", parser.single("image"), async(req, res, next)=> {
+    try {
+        res.json(req.file)
+    } catch (error) {
+        next(error)
+    }
+})
 
 
 
