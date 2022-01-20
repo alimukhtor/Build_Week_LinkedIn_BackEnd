@@ -25,7 +25,12 @@ experienceRouter.get("/:username/experiences", async (req, res, next) => {
     console.log(req.params.username);
     const experience = await ExperienceModel.find({
       name: req.params.username,
-    }).populate("user");
+    })
+    // const allExpr = await ExperienceModel.find().populate("user")
+    //     allExpr.forEach(expr => {
+    //       ProfileModel.find({ username: expr.username })
+    //     })
+    //     res.send(allExpr)
     res.send(experience);
   } catch (error) {
     next(error);
