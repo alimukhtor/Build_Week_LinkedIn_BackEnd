@@ -22,7 +22,8 @@ export const profileSchema = new Schema({
     title:{type:String},
     area:{type:String},
     image:{type:String, default:"Image()"},
-    username:{type:String, unique:true},
+    username:{type:String, unique:true, required:true},
+    
 },
 {
     timestamps:true
