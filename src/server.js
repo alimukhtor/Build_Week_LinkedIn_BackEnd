@@ -4,6 +4,18 @@ import listEndpoints from "express-list-endpoints";
 import mongoose from "mongoose";
 import experienceRouter from "./services/model/experience/index.js";
 
+const whiteList = [process.env.FE_LOCAL_URL, process.env.FE_REMOTE_URL]
+
+const corsOptions = {
+    origin: function (origin, next) {
+        console.log(origin);
+        if (!origin || whiteList.indexOf(origin) !== -1) {
+            next(null, true);
+        } else {
+            next(new Error("Not allowed by CORS"));
+        }
+    },
+};
 
 const server = express();
 
@@ -14,7 +26,7 @@ import postRouter from "./services/model/post/index.js";
 
 // ************************************* MIDDLEWARES *****************************
 
-server.use(cors());
+server.use(cors(corsOptions));
 server.use(express.json());
 
 //  ****************************************** ROUTES **************************
