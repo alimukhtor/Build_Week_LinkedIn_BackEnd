@@ -7,6 +7,7 @@ import ExperienceModel from "../../schema/experience/schema.js";
 import { v2 as Cloudinary } from "cloudinary"
 import { CloudinaryStorage } from "multer-storage-cloudinary"
 import multer from "multer"
+import ProfileModel from "../../schema/profile/schema.js"
 
 Cloudinary.config({ 
     cloud_name: process.env.CLOUD_NAME, 
@@ -27,7 +28,7 @@ const storage = new CloudinaryStorage({
    
 const parser = multer({ storage: storage })
 
-experienceRouter.post("/:userNanme", async (req, res, next) => {
+experienceRouter.post("/:username", async (req, res, next) => {
   try {
     const dataToInsert = req.body;
     dataToInsert.username = req.params.username;
@@ -51,18 +52,34 @@ experienceRouter.post("/:username/experiences/:experienceId/picture", parser.sin
   }
 })
 
+// postRouter.get("/", async (req, res, next) => {
+//   try {
+//       const allPosts = await PostModel.find()
+//       allPosts.forEach(async post => {
+//           let user = await UserModel.findOne({ username: "PMur" })
+//           post.user = user
+//           console.log(post)
+//           console.log(user)
+//       })
+//       res.send(allPosts)
+//   } catch (error) {
+//       next(error)
+//   }
+// })
+
 experienceRouter.get("/", async (req, res, next) => {
   try {
     console.log(req.params.username);
-    const experience = await ExperienceModel.find({
-      name: req.params.username,
-    })
-    // const allExpr = await ExperienceModel.find().populate("user")
-    //     allExpr.forEach(expr => {
-    //       ProfileModel.find({ username: expr.username })
-    //     })
-    //     res.send(allExpr)
-    res.send(experience);
+    // const experience = await ExperienceModel.find({
+    //   name: req.params.username,
+    // })
+    const allExpr = await ExperienceModel.find()
+        allExpr.forEach(async expr => {
+          let experience = await ProfileModel.findOne({ username: expr.username })
+          expr.experience = experience
+          console.log(experience)
+        })
+        res.send(allExpr)
   } catch (error) {
     next(error);
   }

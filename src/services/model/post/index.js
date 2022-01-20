@@ -4,6 +4,7 @@ import UserModel from "../../schema/profile/schema.js"
 import multer from "multer"
 import { v2 as Cloudinary } from "cloudinary"
 import { CloudinaryStorage } from "multer-storage-cloudinary"
+import createHttpError from "http-errors"
 
 Cloudinary.config({ 
     cloud_name: process.env.CLOUD_NAME, 
@@ -41,7 +42,17 @@ postRouter.post("/", async (req, res, next) => {
 
 postRouter.post("/:postId/image", parser.single('image'), async (req, res, next) => {
     try {
-        res.json(req.file)
+        //postModel => findById using :postId => 
+        //PostModel update => image: req.file.path => 
+        //res.json(editedPost)
+        const postId = req.params.postId
+        let editedPost = await PostModel.findById(postId);
+        if (editedPost) {
+            await editedPost.updateOne({image: req.file.path})
+            res.send(editedPost)
+        } else {
+            next(createHttpError(404, `Post with id ${req.params.postId} not found.`))
+        }
     } catch (error) {
         next(error)
     }

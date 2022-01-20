@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { profileSchema } from "../../schema/profile/schema.js"
 
 const { Schema, model } = mongoose;
 
@@ -11,7 +12,7 @@ const experienceSchema = new Schema(
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     image:{type:String, default:"Image()"},
-    user: [{type:Schema.Types.ObjectId, ref:"Profile"}],
+    user: {default: {}, type: profileSchema},
   },
   { timestamps: true }
 );
