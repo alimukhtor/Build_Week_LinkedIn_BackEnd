@@ -10,9 +10,7 @@ const experienceSchema = new Schema(
     endDate:{type:Date},
     description: { type: String},
     area: { type: String},
-    username: { type: String, required: true},
     image:{type:String, default:"Image()"},
-    user: [{ type:Schema.Types.ObjectId, ref:"Profile" }],
   },
   {
     timestamps: true,
