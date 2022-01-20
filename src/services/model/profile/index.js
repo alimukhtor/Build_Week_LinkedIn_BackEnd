@@ -146,8 +146,8 @@ profileRouter.post("/:username/experiences", async(req, res, next)=> {
         console.log("Username is :", user.username);
         if(user){
             // const postExpr = { ...user.toObject(), role: req.body.role, company:req.body.company} 
-            const newExp = new ExprModel(req.body).save()
-            const modifyUser = await ProfileModel.find(req.params.username, {$push:{experiences:newExp}}, {new:true})
+            // const modifyUser = await ProfileModel.findByIdAndUpdate(req.params.username, {$push:{experiences:postExpr}}, {new:true})
+            const newExp = new Exp(req.body).save()
             // const {_id} = await user.save()
             console.log("Body", modifyBlog);
         
