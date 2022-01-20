@@ -1,6 +1,8 @@
 import express from "express";
-
+import json2csv from 'json2csv'
+import fs from "fs-extra"
 // import createHttpError from "http-errors";
+const {createReadStream} = fs
 import ExperienceModel from "../../schema/experience/schema.js";
 import ProfileModel from '../../schema/profile/schema.js'
 
@@ -102,10 +104,12 @@ experienceRouter.delete(
 
 experienceRouter.get("/:username/experiences/CSV", async(req, res, next)=> {
   try {
+    const experience = await ExperienceModel.find(req.body)
+    const getExprsReadableStream =()=> createReadStream(experience)
     res.setHeader("Content-Disposition", "attachment; filename=expr.csv") 
-    const source = getBlogsReadableStream()
-    const transform = new json2csv.Transform({fields: ["title", "text", "createdAt", "cover", "avatar"]})
-    const destination = response
+    const source = getExprsReadableStream()
+    const transform = new json2csv.Transform({fields: ["role", "company", "description", "area", "startDate", "endDate"]})
+    const destination = res
     pipeline(source, transform, destination, err=> {
         if(err) next(err)
     })
