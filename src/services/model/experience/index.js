@@ -28,9 +28,12 @@ const storage = new CloudinaryStorage({
    
 const parser = multer({ storage: storage })
 
+// Post Experience to username
+
 experienceRouter.post("/:username", async (req, res, next) => {
   try {
     const dataToInsert = req.body;
+    console.log("Body:", dataToInsert);
     dataToInsert.username = req.params.username;
 
     const newExperience = new ExperienceModel(dataToInsert);

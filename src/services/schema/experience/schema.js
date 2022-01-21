@@ -5,13 +5,14 @@ const { Schema, model } = mongoose;
 
 const experienceSchema = new Schema(
   {
-    role: { type: String, required: true },
-    company: { type: String, required: true },
-    description: { type: String, required: true },
-    area: { type: String, required: true },
-    startDate: { type: Date, required: true },
-    endDate: { type: Date, required: true },
+    role: { type: String},
+    company: { type: String},
+    description: { type: String},
+    area: { type: String},
+    startDate: { type: Date},
+    endDate: { type: Date},
     image:{type:String, default:"Image()"},
+    username:{type:String},
     user: {default: {}, type: profileSchema},
   },
   { timestamps: true }
